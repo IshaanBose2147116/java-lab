@@ -1,4 +1,4 @@
-package lab2;
+package lab;
 
 public class Department {
     private int deptID;
