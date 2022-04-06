@@ -64,8 +64,12 @@ public class Student {
         this.attendance = attendance;
     }
 
+    public Student(String name, String dob, int studentID, Classes attends, Course course, SubjectAttendance[] attendance) {
+        this(name.split(" ")[0], name.split(" ")[1], dob, studentID, attends, course, attendance);
+    }
+
     public String getStudentName() {
-        return this.fname + this.lname;
+        return this.fname + " " + this.lname;
     }
 
     public int getStudentAge() {
@@ -120,6 +124,11 @@ public class Student {
         System.out.println("Total attendance percentage: " + (((float) totalAttended / totalConducted) * 100) + "%");
     }
 
+    public String toString() {
+        return "Name: " + this.getStudentName()
+            + "\nStudentID: " + this.studentID;
+    }
+
     public static void main(String[] args) {
         Subject java = new Subject("MCA 372", "Java Programming", (byte) 4, (byte) 120, null, null);
         Subject ai = new Subject("MCA 341B", "Introduction to AI", (byte) 4, (byte) 120, null, null);
@@ -136,10 +145,13 @@ public class Student {
 
         Classes studentClass = new Classes(2147, 'A', (byte) 3, null, subjects);
 
-        Student student = new Student("Ishaan", "Bose", "2000/04/28", 2147116, studentClass, new Course(), attendance);
+        Student student = new Student(args[0], "2000/04/28", Integer.parseInt(args[1]), studentClass, new Course(), attendance);
         student.addAttendance();
         student.printStudentAttendancePercentage();
         
         System.out.println("AGE: " + student.getStudentAge());
+
+        System.out.println("Student details:");
+        System.out.println(student);
     }
 }
