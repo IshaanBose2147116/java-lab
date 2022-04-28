@@ -1,8 +1,8 @@
-## Lab 5
+## Lab 6
 
-Implement 'This' Keyword and Command Line arguments with the following conditions
+Implement the following concepts in your domain
 
-1. Refer current class variable, method and constructor using 'this'
-2. Pass a argument to a method and constructor using 'this'
-3. Reusing constructor and constructor chaining using 'this'
-4. Pass string and numeric value using command line arguments
+1. String Class
+2. Draw the memory layout of string class with reference variable and object
+3. StringBuffer Class
+4. StringBuilder Class
