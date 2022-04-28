@@ -1,8 +1,9 @@
-## Lab 5
+## Lab 8
 
-Implement 'This' Keyword and Command Line arguments with the following conditions
+Implement Interface and Packages with following constraints
 
-1. Refer current class variable, method and constructor using 'this'
-2. Pass a argument to a method and constructor using 'this'
-3. Reusing constructor and constructor chaining using 'this'
-4. Pass string and numeric value using command line arguments
+1. Multiple Inheritance using interface
+2. Extending Interface
+3. Default ad Static method inside interface
+4. Nested Interface
+5. Implement package with fully qualified name and display the package information using Package class
