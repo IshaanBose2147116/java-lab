@@ -12,10 +12,11 @@ interface Age {
 }
 
 public class Student {
-    private String fname, lname;
+    private StringBuffer fname, lname;
     private Date dob;
     private int studentID;
     public static String university;
+    public StringBuilder address;
     Classes attends;
     Course course;
     SubjectAttendance[] attendance;
@@ -47,9 +48,9 @@ public class Student {
         }
     }
 
-    public Student(String fname, String lname, String dob, int studentID, Classes attends, Course course, SubjectAttendance[] attendance) {
-        this.fname = fname;
-        this.lname = lname;
+    public Student(String fname, String lname, String dob, int studentID, Classes attends, Course course, SubjectAttendance[] attendance, String address) {
+        this.fname = new StringBuffer(fname);
+        this.lname = new StringBuffer(lname);
 
         String[] dates = dob.split("/");
         Calendar cal = Calendar.getInstance();
@@ -62,14 +63,15 @@ public class Student {
         this.attends = attends;
         this.course = course;
         this.attendance = attendance;
+        this.address = new StringBuilder(address);
     }
 
-    public Student(String name, String dob, int studentID, Classes attends, Course course, SubjectAttendance[] attendance) {
-        this(name.split(" ")[0], name.split(" ")[1], dob, studentID, attends, course, attendance);
+    public Student(String name, String dob, int studentID, Classes attends, Course course, SubjectAttendance[] attendance, String address) {
+        this(name.split(" ")[0], name.split(" ")[1], dob, studentID, attends, course, attendance, address);
     }
 
-    public String getStudentName() {
-        return this.fname + " " + this.lname;
+    public StringBuffer getStudentName() {
+        return this.fname.append(this.lname);
     }
 
     public int getStudentAge() {
@@ -145,7 +147,7 @@ public class Student {
 
         Classes studentClass = new Classes(2147, 'A', (byte) 3, null, subjects);
 
-        Student student = new Student(args[0], "2000/04/28", Integer.parseInt(args[1]), studentClass, new Course(), attendance);
+        Student student = new Student(args[0], "2000/04/28", Integer.parseInt(args[1]), studentClass, new Course(), attendance, "903 Address...");
         student.addAttendance();
         student.printStudentAttendancePercentage();
         
