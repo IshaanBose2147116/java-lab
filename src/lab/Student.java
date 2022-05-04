@@ -6,12 +6,7 @@ import java.time.ZoneId;
 import java.time.Period;
 import java.util.Calendar;
 
-interface Age {
-    LocalDate currentDate = LocalDate.now();
-    int getAge();
-}
-
-public class Student {
+public class Student implements Age {
     private StringBuffer fname, lname;
     private Date dob;
     private int studentID;
@@ -74,17 +69,11 @@ public class Student {
         return this.fname.append(this.lname);
     }
 
-    public int getStudentAge() {
-        Age age = new Age() {
-            public int getAge() {
-                final LocalDate studentDoB = dob.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                final Period difference = Period.between(studentDoB, currentDate);
+    public int getAge() {
+        final LocalDate studentDoB = dob.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        final Period difference = Period.between(studentDoB, Age.currentDate);
 
-                return difference.getYears();
-            }
-        };
-
-        return age.getAge();
+        return difference.getYears();
     }
 
     private void addAttendance() {
@@ -151,7 +140,7 @@ public class Student {
         student.addAttendance();
         student.printStudentAttendancePercentage();
         
-        System.out.println("AGE: " + student.getStudentAge());
+        System.out.println("AGE: " + student.getAge());
 
         System.out.println("Student details:");
         System.out.println(student);
