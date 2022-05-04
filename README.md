@@ -1,8 +1,11 @@
-## Lab 5
+## Lab 7
 
-Implement 'This' Keyword and Command Line arguments with the following conditions
+Implement following concepts based on your domain
 
-1. Refer current class variable, method and constructor using 'this'
-2. Pass a argument to a method and constructor using 'this'
-3. Reusing constructor and constructor chaining using 'this'
-4. Pass string and numeric value using command line arguments
+1. Any two type of inheritance
+2. Aggregation
+3. Composition
+4. Accessing parent class variable, method and constructor using super
+5. Reusing parent constructor using super
+6. Abstract class with constructor member and methods
+7. Use final keyword in appropriate places
