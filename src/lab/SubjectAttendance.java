@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class SubjectAttendance extends Subject {
-    Map<Date, Boolean> attendance;
+    final Map<Date, Boolean> attendance;
     private int hoursAttended, hoursConducted;
 
     public SubjectAttendance(String subjectCode, String subName, byte credits, byte hours, 
@@ -49,5 +49,10 @@ public class SubjectAttendance extends Subject {
 
     public float getAttendancePercentage() {
         return (((float) this.hoursAttended) / this.hoursConducted) * 100;
+    }
+
+    public String toString() {
+        return super.getSubjectDetails()
+            + "\nAttendance percentage: " + this.getAttendancePercentage();
     }
 }
