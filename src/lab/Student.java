@@ -1,6 +1,11 @@
 package lab;
 
 import java.util.Date;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.Period;
@@ -29,16 +34,20 @@ public class Student {
         static Date createDate(int year, int month, int day) {
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.YEAR, year);
-            cal.set(Calendar.MONTH, month);
+            cal.set(Calendar.MONTH, month - 1);
             cal.set(Calendar.DATE, day);
     
             return cal.getTime();
+        }
+
+        static Date createDate(String year, String month, String day) {
+            return DateCreator.createDate(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
         }
     
         static Date createDate(int year, int month, int day, int hour, int minute, int second) {
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.YEAR, year);
-            cal.set(Calendar.MONTH, month);
+            cal.set(Calendar.MONTH, month - 1);
             cal.set(Calendar.DATE, day);
             cal.set(Calendar.HOUR, hour);
             cal.set(Calendar.MINUTE, minute);
@@ -53,11 +62,7 @@ public class Student {
         this.lname = new StringBuffer(lname);
 
         String[] dates = dob.split("/");
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, Integer.parseInt(dates[0]));
-        cal.set(Calendar.MONTH, Integer.parseInt(dates[1]));
-        cal.set(Calendar.DATE, Integer.parseInt(dates[2]));
-        this.dob = cal.getTime();
+        this.dob = DateCreator.createDate(dates[0], dates[1], dates[2]);
 
         this.studentID = studentID;
         this.attends = attends;
@@ -74,15 +79,18 @@ public class Student {
         return this.fname.append(this.lname);
     }
 
-    public int getStudentAge() {
+    public int getStudentAge() throws AgeException {
         Age age = new Age() {
             public int getAge() {
                 final LocalDate studentDoB = dob.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 final Period difference = Period.between(studentDoB, currentDate);
 
-                return difference.getYears();
+                return difference.normalized().getYears();
             }
         };
+
+        if (age.getAge() <= 18)
+            throw new AgeException("Age cannot be less than or equal to 18 years.");
 
         return age.getAge();
     }
@@ -144,16 +152,62 @@ public class Student {
         SubjectAttendance dsAttendance = new SubjectAttendance(ds);
 
         SubjectAttendance[] attendance = { javaAttendance, cnAttendance, dsAttendance, aiAttendance };
+        int classID = 0;
+        char section = '\0';
+        byte semester = 0;
+        BufferedReader reader = null;
 
-        Classes studentClass = new Classes(2147, 'A', (byte) 3, null, subjects);
+        try {
+            File file = new File("./data/classinfo.txt");
+            FileReader fileReader = new FileReader(file.getAbsolutePath());
+            reader = new BufferedReader(fileReader);
+            String line;
+            int lineNum = 0;
 
-        Student student = new Student(args[0], "2000/04/28", Integer.parseInt(args[1]), studentClass, new Course(), attendance, "903 Address...");
-        student.addAttendance();
-        student.printStudentAttendancePercentage();
-        
-        System.out.println("AGE: " + student.getStudentAge());
+            while ((line = reader.readLine()) != null) {
+                switch (lineNum) {
+                    case 0: classID = Integer.parseInt(line); break;
+                    case 1: section = line.charAt(0); break;
+                    case 2: semester = Byte.parseByte(line); break;
+                }
 
-        System.out.println("Student details:");
-        System.out.println(student);
+                lineNum++;
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("classinfo.txt not found.");
+            return;
+        } catch (IOException e) {
+            System.out.println("Could not read file.");
+            return;
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                System.out.println("Could not close buffered reader.");
+            } catch (NullPointerException e) {}
+        }
+
+        Classes studentClass = new Classes(classID, section, semester, null, subjects);
+
+        try {
+            Student student = new Student(args[0], "2000/04/28", Integer.parseInt(args[1]), studentClass, new Course(), attendance, "903 Address...");
+            student.addAttendance();
+            student.printStudentAttendancePercentage();
+            
+            try {
+                System.out.println("AGE: " + student.getStudentAge());
+            } catch (AgeException e) {
+                System.out.println(e.getMessage());
+            }
+    
+            System.out.println("Student details:");
+            System.out.println(student);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Must pass two command line arguments.");
+        } catch (NumberFormatException e) {
+            System.out.println("Second argument must be an integer.");
+        } finally {
+            System.out.println("Execution finished!");
+        }
     }
 }
