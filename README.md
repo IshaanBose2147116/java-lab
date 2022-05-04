@@ -1,11 +1,7 @@
-## Lab 7
+## Lab 9
 
-Implement following concepts based on your domain
+Implement Exception Handling with the following constraints
 
-1. Any two type of inheritance
-2. Aggregation
-3. Composition
-4. Accessing parent class variable, method and constructor using super
-5. Reusing parent constructor using super
-6. Abstract class with constructor member and methods
-7. Use final keyword in appropriate places
+1. Implement at least 2 checked and unchecked exceptions
+2. Nested 'try' and 'catch' with 'final' block
+3. Implement 2 custom exception based on your domain
