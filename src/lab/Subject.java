@@ -25,4 +25,11 @@ public class Subject {
         this.taughtBy = copy.taughtBy;
         this.startsBy = copy.startsBy;
     }
+
+    public String getSubjectDetails() {
+        return "Subject code: " + this.subjectCode
+            + "\nSubject name: " + this.subName
+            + "\nCredits: " + this.credits
+            + "\nTaught by: " + this.taughtBy.getName();
+    }
 }
