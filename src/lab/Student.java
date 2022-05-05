@@ -6,7 +6,7 @@ import java.time.ZoneId;
 import java.time.Period;
 import java.util.Calendar;
 
-public class Student implements Age {
+public class Student implements Age, Name {
     private StringBuffer fname, lname;
     private Date dob;
     private int studentID;
@@ -18,29 +18,6 @@ public class Student implements Age {
 
     static {
         Student.university = "Christ University";
-    }
-
-    static class DateCreator {
-        static Date createDate(int year, int month, int day) {
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.YEAR, year);
-            cal.set(Calendar.MONTH, month);
-            cal.set(Calendar.DATE, day);
-    
-            return cal.getTime();
-        }
-    
-        static Date createDate(int year, int month, int day, int hour, int minute, int second) {
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.YEAR, year);
-            cal.set(Calendar.MONTH, month);
-            cal.set(Calendar.DATE, day);
-            cal.set(Calendar.HOUR, hour);
-            cal.set(Calendar.MINUTE, minute);
-            cal.set(Calendar.SECOND, second);
-    
-            return cal.getTime();
-        }
     }
 
     public Student(String fname, String lname, String dob, int studentID, Classes attends, Course course, SubjectAttendance[] attendance, String address) {
@@ -78,30 +55,45 @@ public class Student implements Age {
 
     private void addAttendance() {
         this.attendance[0].addLectureAttendance(
-            Student.DateCreator.createDate(2022, 3, 20, 11, 0, 0), true
+            lab.Age.DateCreator.createDate(2022, 3, 20, 11, 0, 0), true
         );
         this.attendance[0].addLectureAttendance(
-            Student.DateCreator.createDate(2022, 3, 20, 12, 0, 0), true
+            lab.Age.DateCreator.createDate(2022, 3, 20, 12, 0, 0), true
         );
         this.attendance[0].addLectureAttendance(
-            Student.DateCreator.createDate(2022, 3, 22, 9, 0, 0), false
+            lab.Age.DateCreator.createDate(2022, 3, 22, 9, 0, 0), false
         );
         this.attendance[0].addLectureAttendance(
-            Student.DateCreator.createDate(2022, 3, 23, 13, 0, 0), true
+            lab.Age.DateCreator.createDate(2022, 3, 23, 13, 0, 0), true
         );
 
         this.attendance[1].addLectureAttendance(
-            Student.DateCreator.createDate(2022, 3, 20, 11, 0, 0), false
+            lab.Age.DateCreator.createDate(2022, 3, 20, 11, 0, 0), false
         );
         this.attendance[1].addLectureAttendance(
-            Student.DateCreator.createDate(2022, 3, 20, 12, 0, 0), false
+            lab.Age.DateCreator.createDate(2022, 3, 20, 12, 0, 0), false
         );
         this.attendance[1].addLectureAttendance(
-            Student.DateCreator.createDate(2022, 3, 22, 9, 0, 0), false
+            lab.Age.DateCreator.createDate(2022, 3, 22, 9, 0, 0), false
         );
         this.attendance[1].addLectureAttendance(
-            Student.DateCreator.createDate(2022, 3, 23, 13, 0, 0), true
+            lab.Age.DateCreator.createDate(2022, 3, 23, 13, 0, 0), true
         );
+    }
+
+    @Override
+    public String getFullname() {
+        return this.getFirstName() + " " + this.getLastName();
+    }
+
+    @Override
+    public String getFirstName() {
+        return this.fname.toString();
+    }
+
+    @Override
+    public String getLastName() {
+        return this.lname.toString();
     }
 
     public void printStudentAttendancePercentage() {
