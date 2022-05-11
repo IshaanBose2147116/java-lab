@@ -1,9 +1,7 @@
-## Lab 8
+## Lab 10
 
-Implement Interface and Packages with following constraints
-
-1. Multiple Inheritance using interface
-2. Extending Interface
-3. Default and Static method inside interface
-4. Nested Interface
-5. Implement package with fully qualified name and display the package information using Package class
+Implement multithreading with the following constraints
+1. Create a thread using Runnable interface and by extending thread class (Display the current thread also)
+2. Thread Priority
+3. Implement methods such as `join()`, `sleep`, `notify()`, `notifyALL()`
+4. Synchronized method 
