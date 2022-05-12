@@ -181,6 +181,12 @@ public class Student implements Age, Name, Runnable {
 
         System.out.println();
 
+        t1.setName("Top priority thread");
+        t1.setPriority(Thread.MAX_PRIORITY);
+
+        t4.setName("Lowest priority thread");
+        t4.setPriority(Thread.MIN_PRIORITY);
+
         t1.start();
         t2.start();
         t3.start();
