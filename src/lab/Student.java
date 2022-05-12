@@ -6,7 +6,7 @@ import java.time.ZoneId;
 import java.time.Period;
 import java.util.Calendar;
 
-public class Student implements Age, Name {
+public class Student implements Age, Name, Runnable {
     private StringBuffer fname, lname;
     private Date dob;
     private int studentID;
@@ -15,6 +15,8 @@ public class Student implements Age, Name {
     Classes attends;
     Course course;
     SubjectAttendance[] attendance;
+    volatile int attendanceIndex;
+    volatile boolean inCritSection = false;
 
     static {
         Student.university = "Christ University";
@@ -112,7 +114,33 @@ public class Student implements Age, Name {
             + "\nStudentID: " + this.studentID;
     }
 
-    public static void main(String[] args) {
+    synchronized private void printAttendances() {
+        try {
+            while (inCritSection)
+                this.wait();
+            inCritSection = true;
+        } catch (InterruptedException e) {
+            System.out.println(e);
+        }
+
+        System.out.println(Thread.currentThread().getName());
+        System.out.println(this.attendance[attendanceIndex]);
+        System.out.println();
+        attendanceIndex += 1;
+        inCritSection = false;
+
+        if (attendanceIndex < attendance.length - 1)
+            this.notify();
+        else
+            this.notifyAll();
+    }
+
+    @Override
+    public void run() {
+        printAttendances();
+    }
+
+    public static void main(String[] args) throws InterruptedException {
         Subject java = new Subject("MCA 372", "Java Programming", (byte) 4, (byte) 120, null, null);
         Subject ai = new Subject("MCA 341B", "Introduction to AI", (byte) 4, (byte) 120, null, null);
         Subject cn = new Subject("MCA 331", "Computer Networks", (byte) 4, (byte) 120, null, null);
@@ -123,18 +151,39 @@ public class Student implements Age, Name {
         SubjectAttendance aiAttendance = new SubjectAttendance(ai);
         SubjectAttendance cnAttendance = new SubjectAttendance(cn);
         SubjectAttendance dsAttendance = new SubjectAttendance(ds);
-
+        
         SubjectAttendance[] attendance = { javaAttendance, cnAttendance, dsAttendance, aiAttendance };
-
+        
         Classes studentClass = new Classes(2147, 'A', (byte) 3, null, subjects);
-
+        
         Student student = new Student(args[0], "2000/04/28", Integer.parseInt(args[1]), studentClass, new Course(), attendance, "903 Address...");
         student.addAttendance();
+        javaAttendance.start();
+        aiAttendance.start();
+        cnAttendance.start();
+        dsAttendance.start();
+
+        javaAttendance.join();
+
         student.printStudentAttendancePercentage();
         
         System.out.println("AGE: " + student.getAge());
 
         System.out.println("Student details:");
         System.out.println(student);
+
+        Thread.sleep(1000);
+
+        Thread t1 = new Thread(student);
+        Thread t2 = new Thread(student);
+        Thread t3 = new Thread(student);
+        Thread t4 = new Thread(student);
+
+        System.out.println();
+
+        t1.start();
+        t2.start();
+        t3.start();
+        t4.start();
     }
 }

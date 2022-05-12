@@ -1,8 +1,9 @@
 package lab;
 
 import java.util.Date;
+import java.util.Objects;
 
-public class Subject {
+public class Subject extends Thread {
     String subjectCode, subName;
     byte credits, hours;
     Teacher taughtBy;
@@ -30,6 +31,6 @@ public class Subject {
         return "Subject code: " + this.subjectCode
             + "\nSubject name: " + this.subName
             + "\nCredits: " + this.credits
-            + "\nTaught by: " + this.taughtBy.getName();
+            + "\nTaught by: " + (Objects.isNull(this.taughtBy) ? "Nobody" : this.taughtBy.getName());
     }
 }

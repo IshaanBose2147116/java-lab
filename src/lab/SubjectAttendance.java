@@ -51,6 +51,12 @@ public class SubjectAttendance extends Subject {
         return (((float) this.hoursAttended) / this.hoursConducted) * 100;
     }
 
+    public void run() {
+        Thread.currentThread().setName(super.subjectCode);
+        System.out.println(Thread.currentThread().getName());
+        System.out.println("\n" + this + "\n");
+    }
+
     public String toString() {
         return super.getSubjectDetails()
             + "\nAttendance percentage: " + this.getAttendancePercentage();
