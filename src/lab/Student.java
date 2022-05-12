@@ -156,6 +156,10 @@ public class Student {
         subjects.add(ai);
         subjects.add(cn);
         subjects.add(ds);
+
+        for (Subject sub : subjects) {
+            System.out.println(sub);
+        }
         
         SubjectAttendance javaAttendance = new SubjectAttendance(java);
         SubjectAttendance aiAttendance = new SubjectAttendance(ai);

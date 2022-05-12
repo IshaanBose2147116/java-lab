@@ -1,6 +1,7 @@
 package lab;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Subject implements Comparable<Subject> {
     String subjectCode, subName;
@@ -30,7 +31,11 @@ public class Subject implements Comparable<Subject> {
         return "Subject code: " + this.subjectCode
             + "\nSubject name: " + this.subName
             + "\nCredits: " + this.credits
-            + "\nTaught by: " + this.taughtBy.getName();
+            + "\nTaught by: " + (Objects.isNull(this.taughtBy) ? "Nobody" : this.taughtBy.getName());
+    }
+
+    public String toString() {
+        return getSubjectDetails();
     }
 
     @Override
