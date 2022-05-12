@@ -10,6 +10,10 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.Period;
 import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.TreeSet;
 
 interface Age {
     LocalDate currentDate = LocalDate.now();
@@ -24,7 +28,7 @@ public class Student {
     public StringBuilder address;
     Classes attends;
     Course course;
-    SubjectAttendance[] attendance;
+    ArrayList<SubjectAttendance> attendance;
 
     static {
         Student.university = "Christ University";
@@ -57,7 +61,7 @@ public class Student {
         }
     }
 
-    public Student(String fname, String lname, String dob, int studentID, Classes attends, Course course, SubjectAttendance[] attendance, String address) {
+    public Student(String fname, String lname, String dob, int studentID, Classes attends, Course course, ArrayList<SubjectAttendance> attendance, String address) {
         this.fname = new StringBuffer(fname);
         this.lname = new StringBuffer(lname);
 
@@ -71,7 +75,7 @@ public class Student {
         this.address = new StringBuilder(address);
     }
 
-    public Student(String name, String dob, int studentID, Classes attends, Course course, SubjectAttendance[] attendance, String address) {
+    public Student(String name, String dob, int studentID, Classes attends, Course course, ArrayList<SubjectAttendance> attendance, String address) {
         this(name.split(" ")[0], name.split(" ")[1], dob, studentID, attends, course, attendance, address);
     }
 
@@ -96,29 +100,29 @@ public class Student {
     }
 
     private void addAttendance() {
-        this.attendance[0].addLectureAttendance(
+        this.attendance.get(0).addLectureAttendance(
             Student.DateCreator.createDate(2022, 3, 20, 11, 0, 0), true
         );
-        this.attendance[0].addLectureAttendance(
+        this.attendance.get(0).addLectureAttendance(
             Student.DateCreator.createDate(2022, 3, 20, 12, 0, 0), true
         );
-        this.attendance[0].addLectureAttendance(
+        this.attendance.get(0).addLectureAttendance(
             Student.DateCreator.createDate(2022, 3, 22, 9, 0, 0), false
         );
-        this.attendance[0].addLectureAttendance(
+        this.attendance.get(0).addLectureAttendance(
             Student.DateCreator.createDate(2022, 3, 23, 13, 0, 0), true
         );
 
-        this.attendance[1].addLectureAttendance(
+        this.attendance.get(1).addLectureAttendance(
             Student.DateCreator.createDate(2022, 3, 20, 11, 0, 0), false
         );
-        this.attendance[1].addLectureAttendance(
+        this.attendance.get(1).addLectureAttendance(
             Student.DateCreator.createDate(2022, 3, 20, 12, 0, 0), false
         );
-        this.attendance[1].addLectureAttendance(
+        this.attendance.get(1).addLectureAttendance(
             Student.DateCreator.createDate(2022, 3, 22, 9, 0, 0), false
         );
-        this.attendance[1].addLectureAttendance(
+        this.attendance.get(1).addLectureAttendance(
             Student.DateCreator.createDate(2022, 3, 23, 13, 0, 0), true
         );
     }
@@ -126,9 +130,12 @@ public class Student {
     public void printStudentAttendancePercentage() {
         int totalConducted = 0, totalAttended = 0;
 
-        for (int i = 0; i < attendance.length; i++) {
-            totalConducted += this.attendance[i].getHoursConducted();
-            totalAttended += this.attendance[i].getHoursAttended();
+        Iterator<SubjectAttendance> it = attendance.iterator();
+
+        while (it.hasNext()) {
+            SubjectAttendance temp = it.next();
+            totalConducted += temp.getHoursConducted();
+            totalAttended += temp.getHoursAttended();
         }
 
         System.out.println("Total attendance percentage: " + (((float) totalAttended / totalConducted) * 100) + "%");
@@ -144,7 +151,11 @@ public class Student {
         Subject ai = new Subject("MCA 341B", "Introduction to AI", (byte) 4, (byte) 120, null, null);
         Subject cn = new Subject("MCA 331", "Computer Networks", (byte) 4, (byte) 120, null, null);
         Subject ds = new Subject("MCA 371", "Data Structures in C", (byte) 4, (byte) 120, null, null);
-        Subject[] subjects = { java, ai, cn, ds };
+        TreeSet<Subject> subjects = new TreeSet<Subject>();
+        subjects.add(java);
+        subjects.add(ai);
+        subjects.add(cn);
+        subjects.add(ds);
         
         SubjectAttendance javaAttendance = new SubjectAttendance(java);
         SubjectAttendance aiAttendance = new SubjectAttendance(ai);
@@ -152,6 +163,7 @@ public class Student {
         SubjectAttendance dsAttendance = new SubjectAttendance(ds);
 
         SubjectAttendance[] attendance = { javaAttendance, cnAttendance, dsAttendance, aiAttendance };
+        ArrayList<SubjectAttendance> attList = new ArrayList<SubjectAttendance>(Arrays.asList(attendance));
         int classID = 0;
         char section = '\0';
         byte semester = 0;
@@ -190,7 +202,7 @@ public class Student {
         Classes studentClass = new Classes(classID, section, semester, null, subjects);
 
         try {
-            Student student = new Student(args[0], "2000/04/28", Integer.parseInt(args[1]), studentClass, new Course(), attendance, "903 Address...");
+            Student student = new Student(args[0], "2000/04/28", Integer.parseInt(args[1]), studentClass, new Course(), attList, "903 Address...");
             student.addAttendance();
             student.printStudentAttendancePercentage();
             

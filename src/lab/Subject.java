@@ -2,7 +2,7 @@ package lab;
 
 import java.util.Date;
 
-public class Subject {
+public class Subject implements Comparable<Subject> {
     String subjectCode, subName;
     byte credits, hours;
     Teacher taughtBy;
@@ -31,5 +31,10 @@ public class Subject {
             + "\nSubject name: " + this.subName
             + "\nCredits: " + this.credits
             + "\nTaught by: " + this.taughtBy.getName();
+    }
+
+    @Override
+    public int compareTo(Subject o) {
+        return this.subjectCode.compareTo(o.subjectCode);
     }
 }

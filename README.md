@@ -1,7 +1,6 @@
 ## Lab 9
 
-Implement Exception Handling with the following constraints
+Implement Collection with the following constraints
 
-1. Implement at least 2 checked and unchecked exceptions
-2. Nested 'try' and 'catch' with 'final' block
-3. Implement 2 custom exception based on your domain
+1. Implement ArrayList and LinkedList with Iterator cursor
+2. Implement HashSet and TreeSet 
