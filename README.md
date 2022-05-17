@@ -1,6 +1,10 @@
-## Lab 11
+## Lab 12
 
-Implement Collection with the following constraints
+Implement SWING with JDBC with following conditions
 
-1. Implement ArrayList and LinkedList with Iterator cursor
-2. Implement HashSet and TreeSet 
+1. Create GUI Application with proper input validations
+2. Implement JDBC with following:
+    1. Statement Interface
+    2. PreparedStatement Interface
+    3. ResultMetaData Interface
+3. implement multiple sql statement for the same table using batch and run it using executeBatch() method
